@@ -38,7 +38,8 @@ class Worker:
     async def _write(self, socket, response, file_path = None):
         await self.loop.sock_sendall(socket, str(response).encode('utf-8'))
         
-        if file_path is not None:
+        if file_path is not None and self.request_parser.method != 'HEAD':
+            print('returning file to client')
             with open(file_path, 'rb') as f:
                 for chunk in iter(lambda : f.read(self._CHUNK_SIZE), b''):
                     await self.loop.sock_sendall(socket, chunk)
@@ -71,7 +72,7 @@ class Worker:
 
 
         if not os.path.exists(file_path):
-            await self._write(socket, Response(403))
+            await self._write(socket, Response(404))
             socket.close()
             print('path: ', file_path, ' does not exist')
             return

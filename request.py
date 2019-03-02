@@ -1,3 +1,4 @@
+import os
 import re
 import string
 
@@ -13,6 +14,7 @@ _REQUEST_LINE_RE = r'^(?P<method>[A-Z]+)\s+' \
 
 class Request():
     _DELIMITER = '\r\n'
+    _EMPTY_STRING = '\r\n' * 2
     _INDEX_FILE = 'index.html'
     _REQUEST_LINE_PATTERN = re.compile(_REQUEST_LINE_RE)
 
@@ -26,13 +28,21 @@ class Request():
         print(raw_request)
         if not raw_request or type(raw_request) != str:
             return False
-        # if raw_request.find(self._DELIMITER * 2) > 0:
-        request, body = raw_request.split(self._DELIMITER * 2)
-        # else:
-        #     request = raw_request
-        request_line, headers = request.split(self._DELIMITER, maxsplit=1)
+        
+        if raw_request.find(self._EMPTY_STRING) > 0:
+            request, _ = raw_request.split(self._EMPTY_STRING)
+        else:
+            request = raw_request
+        
+        print(request)
 
-        return self._parse_headers(headers) and self._parse_request_line(request_line)
+        if request.find(self._DELIMITER) > 0:
+            request_line, headers = request.split(self._DELIMITER, maxsplit=1)
+            return self._parse_headers(headers) and self._parse_request_line(request_line)
+        else:
+            request_line = request
+            return self._parse_request_line(request_line)
+
 
 
     def _parse_headers(self, raw_headers):
@@ -60,10 +70,11 @@ class Request():
 
         self.method = match.group('method')
 
-        self.path = match.group('path') #or '/'
+        self.path = match.group('path')
 
-        # if self.path[-1] == '/':
-        #     self.path = self.path + self._INDEX_FILE
+        #если путь ведет в родительские каталоги
+        if self.path.find('/../') > 0:
+            return False
 
         return True
 
