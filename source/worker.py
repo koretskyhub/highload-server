@@ -6,9 +6,11 @@ from datetime import datetime
 from urllib.parse import unquote
 import uvloop
 
-import constants
-import request
-from response import Response
+import http.constants as constants
+from http.request import Request 
+from http.response import Response
+
+_CHUNK_SIZE = 1024
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
@@ -16,7 +18,7 @@ class Worker:
     def __init__(self, socket, document_root):
          self.socket = socket
          self.document_root = os.path.abspath(document_root)
-         self.request_parser = request.Request()
+         self.request_parser = Request()
 
          self.loop = uvloop.new_event_loop()
          asyncio.set_event_loop(self.loop)
@@ -30,7 +32,7 @@ class Worker:
 
 
     async def _read(self, sock):
-        return (await self.loop.sock_recv(sock, constants.CHUNK_SIZE)).decode('utf8')
+        return (await self.loop.sock_recv(sock, _CHUNK_SIZE)).decode('utf8')
 
 
     async def _write(self, socket, response, file_path = None):
@@ -38,13 +40,11 @@ class Worker:
         
         if file_path is not None and self.request_parser.method != 'HEAD':
             with open(file_path, 'rb') as f:
-                for chunk in iter(lambda : f.read(constants.CHUNK_SIZE), b''):
+                for chunk in iter(lambda : f.read(_CHUNK_SIZE), b''):
                     await self.loop.sock_sendall(socket, chunk)
 
 
     async def handle_connection(self, socket):
-        print('handling client')
-
         request = await self._read(socket)
  
         if not self.request_parser.parse(request):

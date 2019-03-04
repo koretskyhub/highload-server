@@ -1,5 +1,6 @@
 from datetime import datetime
-import constants
+
+import http.constants as constants
 
 __all__ = (
     'Response'

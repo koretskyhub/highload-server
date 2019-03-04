@@ -4,8 +4,6 @@ HTTP_VERSION = '1.1'
 SERVER_NAME = 'AsyncIO'
 STRING_DELIMITER = '\r\n'
 BODY_DELIMITER = '\r\n' * 2
-CHUNK_SIZE = 1024
-QUEUE_SIZE = 8
 ALLOWED_METHODS = ('GET', 'HEAD')
 INDEX_FILE = 'index.html'
 
@@ -20,5 +18,5 @@ def default_headers(self):
         return {
         'Connection': 'close',
         'Date': datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT'),
-        'Server': self._SERVER_NAME
+        'Server': SERVER_NAME
     }

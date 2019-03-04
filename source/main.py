@@ -2,10 +2,10 @@ import argparse
 from multiprocessing import Process
 import socket
 
-import constants
-import config
+import config as config
 from worker import Worker
 
+QUEUE_SIZE = 8
 
 def get_arguments_namespace():
     parser = argparse.ArgumentParser(description = 'Web-server for highload tp course')
@@ -33,7 +33,7 @@ def main():
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind((params['host'], params['port']))
-    sock.listen(constants.QUEUE_SIZE)
+    sock.listen(QUEUE_SIZE)
     sock.setblocking(False)
     
     print('Server listening at:', params['host'], 'port', params['port'])

@@ -2,7 +2,7 @@ import os
 import re
 import string
 
-import constants
+import http.constants as constants
 
 __all__ = (
     'Request'
