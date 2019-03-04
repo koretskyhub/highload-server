@@ -42,7 +42,6 @@ class Config:
 
             for param_key in _params_scheme:
                 param = _params_scheme[param_key]
-
                 match = param['pattern'].search(data)
                 if match:
                     self.params[param_key] = match.group(param_key)
@@ -53,7 +52,11 @@ class Config:
                     except ValueError:
                         raise ValueError('param(' + param_key + ') wrong value type')
                 else:
-                    if  'default' in _params_scheme[param_key].keys():
+                    if 'default' in _params_scheme[param_key].keys():
+                        print('Parameter: "' + param_key +
+                              '" not found in config file, using default value "' + 
+                              _params_scheme[param_key].get('default') + '"'
+                             )
                         self.params[param_key] = _params_scheme[param_key].get('default')
                     else:
                         raise ValueError('param(' + param_key + ') missed')
