@@ -54,8 +54,7 @@ class Config:
                 else:
                     if 'default' in _params_scheme[param_key].keys():
                         print('Parameter: "' + param_key +
-                              '" not found in config file, using default value "' + 
-                              _params_scheme[param_key].get('default') + '"'
+                              '" not found in config file, using default value "'
                              )
                         self.params[param_key] = _params_scheme[param_key].get('default')
                     else:
