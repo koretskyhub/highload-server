@@ -18,7 +18,7 @@ _params_scheme = {
     'port' : {
         'pattern' : re.compile(r'^port\s+(?P<port>\d+)$', re.M),
         'type'    : int,
-        'default' : '80'
+        'default' : 80
     },
     'host' : {
         'pattern' : re.compile(r'^host\s+(?P<host>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$', re.M),
