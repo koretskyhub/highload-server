@@ -10,4 +10,4 @@ WORKDIR /bin/highload-server
 
 EXPOSE 80
 
-CMD python3 main.py --config-file /etc/highload-server/httpd.conf
+CMD python3 main.py --config-file /etc/httpd.conf
