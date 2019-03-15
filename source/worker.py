@@ -30,7 +30,6 @@ class Worker:
             conn, _ = await self.loop.sock_accept(self.socket)
             self.loop.create_task(self.handle_connection(conn))
 
-
     async def _read(self, sock):
         return (await self.loop.sock_recv(sock, _CHUNK_SIZE)).decode('utf8')
 
@@ -57,6 +56,9 @@ class Worker:
             socket.close()
             return
 
+        print(self.request_parser.method)
+        print(self.request_parser.file_path)
+        print(self.request_parser.headers)
 
         #path не должен начинаться со /
         file_path = os.path.join(self.document_root, self.request_parser.path)
