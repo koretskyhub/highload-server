@@ -23,7 +23,7 @@ _params_scheme = {
     'host' : {
         'pattern' : re.compile(r'^host\s+(?P<host>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$', re.M),
         'type'    : str,
-        'default' : 'localhost'
+        'default' : '0.0.0.0'
     },
 }
 
