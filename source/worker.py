@@ -57,7 +57,7 @@ class Worker:
             return
 
         print(self.request_parser.method)
-        print(self.request_parser.file_path)
+        print(self.request_parser.path)
         print(self.request_parser.headers)
 
         #path не должен начинаться со /
