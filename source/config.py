@@ -9,7 +9,7 @@ _params_scheme = {
     'cpu_limit' : {
         'pattern' : re.compile(r'^cpu_limit\s+(?P<cpu_limit>\d+)$', re.M),
         'type'    : int,
-        'default' : '1'
+        'default' : 1
     },
     'document_root' : {
         'pattern' : re.compile(r'^document_root\s+(?P<document_root>[^\s]+)$', re.M),
@@ -54,7 +54,7 @@ class Config:
                 else:
                     if 'default' in _params_scheme[param_key].keys():
                         print('Parameter: "' + param_key +
-                              '" not found in config file, using default value "'
+                              '" not found in config file, using default value'
                              )
                         self.params[param_key] = _params_scheme[param_key].get('default')
                     else:

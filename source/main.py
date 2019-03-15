@@ -29,6 +29,8 @@ def main():
     else:
         raise ValueError('Not enough parameters to start server')
 
+    print(os.listdir(params['document_root']))
+
     workers = []
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
