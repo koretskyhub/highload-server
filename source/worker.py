@@ -10,7 +10,7 @@ import http.constants as constants
 from http.request import Request 
 from http.response import Response
 
-_CHUNK_SIZE = 1024
+_CHUNK_SIZE = 262144
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
@@ -36,7 +36,16 @@ class Worker:
 
     async def _write(self, socket, response, file_path = None):
         await self.loop.sock_sendall(socket, str(response).encode('utf-8'))
-        
+
+        # if file_path is not None:
+        #     with open(file_path, 'rb') as fp:
+        #         if fp is not None:
+        #               while True:
+        #                   line = fp.read(_CHUNK_SIZE)
+        #                   if not line:
+        #                       return
+        #                   await self.loop.sock_sendall(socket, line)
+
         if file_path is not None and self.request_parser.method != 'HEAD':
             with open(file_path, 'rb') as f:
                 for chunk in iter(lambda : f.read(_CHUNK_SIZE), b''):
@@ -56,9 +65,9 @@ class Worker:
             socket.close()
             return
 
-        print(self.request_parser.method)
-        print(self.request_parser.path)
-        print(self.request_parser.headers)
+        # print(self.request_parser.method)
+        # print(self.request_parser.path)
+        # print(self.request_parser.headers)
 
         #path не должен начинаться со /
         file_path = os.path.join(self.document_root, self.request_parser.path)
